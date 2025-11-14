@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config'
 import appConfig from 'src/config/app.config'
 import databaseConfig from 'src/config/database.config'
 import environmentValidation from 'src/config/environment.validation'
+import { DatabaseModule } from 'src/database/database.module'
 
 const ENV = process.env.NODE_ENV;
 
@@ -15,11 +16,12 @@ const ENV = process.env.NODE_ENV;
       envFilePath: !ENV ? '.env' : `.env.${ENV}`,
       load: [appConfig, databaseConfig],
       validationSchema: environmentValidation,
-    })
+    }),
+    DatabaseModule,
   ],
   controllers: [],
   providers: [],
-  exports: [],
+  exports: [DatabaseModule],
 })
 export class CoreModule {
 }

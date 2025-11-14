@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 import { DatabaseService } from 'src/database/database.service';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
+import { TransactionManager } from './trx-manager/trx-manager.abstract'
+import { TrxManagerProvider } from './trx-manager/trx-manager.provider'
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
       }),
     }),
   ],
-  providers: [DatabaseService],
+  providers: [DatabaseService, TrxManagerProvider],
+  exports: [DatabaseService, TransactionManager],
 })
 export class DatabaseModule {}
