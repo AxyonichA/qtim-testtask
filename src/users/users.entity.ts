@@ -31,8 +31,18 @@ export class User {
   @Column({
     type: 'varchar',
     length: 96,
-    nullable: true
+    nullable: true,
+    select: false
   })
   @Exclude()
-  password?: string;
+  password?: string | null;
+
+  @Column({
+    type: 'varchar',
+    length: 96,
+    nullable: true,
+    select: false
+  })
+  @Exclude()
+  refreshToken?: string | null;
 }
