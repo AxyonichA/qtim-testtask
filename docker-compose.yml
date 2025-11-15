@@ -1,14 +1,40 @@
 services:
   db: 
     image: postgres:16.3
-    container_name: postgres-db
+    container_name: postgres-database
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: bookings-testing
+      POSTGRES_DB: qtim-tesktask
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
       - "5434:5432"
+
+
+  redis:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    container_name: redis_server
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+
+  redis-commander:
+    container_name: redis-commander-container_name
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    environment:
+    - REDIS_HOST=redis
+    ports:
+      - "127.0.0.1:8081:8081"
+    depends_on:
+      - redis
+    restart:
+      unless-stopped
 volumes:
   db-data:
+
+networks:
+  backend:
+    driver: bridge

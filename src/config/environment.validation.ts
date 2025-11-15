@@ -18,4 +18,7 @@ export default Joi.object({
   JWT_TOKEN_ISSUER: Joi.string().required(),
   JWT_ACCESS_TOKEN_TTL: Joi.number().default(3600),
   JWT_REFRESH_TOKEN_TTL: Joi.number().default(86400),
+
+  REDIS_HOST: Joi.string().default('localhost'),
+  REDIS_PORT: Joi.number().default(6379),
 })
