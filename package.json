@@ -12,14 +12,20 @@
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+
     "typeorm": "cross-env NODE_ENV=development node -r ts-node/register ./node_modules/typeorm/cli.js -d ./src/database/data-source.ts",
     "typeorm:prod": "cross-env NODE_ENV=production node ./node_modules/typeorm/cli.js -d ./dist/database/data-source.js",
+
     "mg:gen": "npm run typeorm -- migration:generate ./src/database/migrations/Init",
     "mg:create": "npm run typeorm -- migration:create ./src/database/migrations/Manual",
+
     "mg:run": "npm run typeorm -- migration:run",
     "mg:revert": "npm run typeorm -- migration:revert",
     "mg:run:prod": "npm run typeorm:prod -- migration:run",
     "mg:revert:prod": "npm run typeorm:prod -- migration:revert",
+
+    "seed": "cross-env NODE_ENV=development ts-node src/database/seeds/seed.ts",
+    
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",

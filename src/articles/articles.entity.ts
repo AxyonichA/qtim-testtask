@@ -12,6 +12,9 @@ export class Article{
   @JoinColumn({ name: 'authorId' })
   author: User;
 
+  @Column({ name: 'authorId' })
+  authorId: number;
+  
   @Column({
     type: 'varchar',
     length: 255,

@@ -5,6 +5,8 @@ import { ArticlesRepository } from './repository/articles.repository'
 import { Article } from './articles.entity'
 import { User } from 'src/users/users.entity'
 import { ArticleStatus } from './enums/article-status.enum'
+import { ArticlesQueryDto } from './dto/articles-query.dto'
+import { PaginatedResponse } from 'src/common/types/pagination.types'
 
 @Injectable()
 export class ArticlesService {
@@ -12,8 +14,24 @@ export class ArticlesService {
     private readonly articlesRepository: ArticlesRepository
   ) {}
 
-  async findAll(): Promise<Article[]> {
-    return await this.articlesRepository.findAll();
+  async findAll(query: ArticlesQueryDto): Promise<PaginatedResponse<Article>>{
+    const { page = 1, limit = 10 } = query;
+
+    const { items, total } = await this.articlesRepository.findAll({
+      ...query,
+      page,
+      limit,
+    });
+
+    return {
+      data: items,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findById(id: number): Promise<Article | null> {

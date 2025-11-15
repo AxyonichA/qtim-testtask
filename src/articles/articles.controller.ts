@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 
 import { Public } from 'src/common/decorators/public.decorator'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
@@ -6,6 +6,8 @@ import { ArticlesService } from './articles.service'
 import { CreateArticleDto } from './dto/create-article.dto'
 import { Article } from './articles.entity'
 import { User } from 'src/users/users.entity'
+import { ArticlesQueryDto } from './dto/articles-query.dto'
+import { PaginatedResponse } from 'src/common/types/pagination.types'
 
 @Controller('articles')
 export class ArticlesController {
@@ -15,8 +17,8 @@ export class ArticlesController {
 
   @Public()
   @Get()
-  async findAll(): Promise<Article[]> {
-    return await this.articlesService.findAll();
+  async findAll(@Query() query: ArticlesQueryDto): Promise<PaginatedResponse<Article>> {
+    return await this.articlesService.findAll(query);
   }
 
   @Public()
