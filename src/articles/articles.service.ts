@@ -10,6 +10,7 @@ import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
 
 @Injectable()
 export class ArticlesService {
+  // Кэш для сохранённых списков статей, чтобы не делать reset при каждом обновлении
   private readonly articleListCacheKeys = new Set<string>()
   constructor(
     private readonly articlesRepository: ArticlesRepository,
@@ -25,6 +26,7 @@ export class ArticlesService {
     return `articles:list:${page}:${limit}:${JSON.stringify(rest)}`;
   }
 
+  // Инвалидируем все сохранённые списки статей, потому что новые данные влияют на пагинацию
   private async invalidateArticlesLists() {
     for (const key of this.articleListCacheKeys) {
       await this.cache.del(key);
@@ -108,6 +110,7 @@ export class ArticlesService {
       throw new ForbiddenException();
     }
     
+    // Переводим статью в PUBLISHED только если она раньше не была опубликована
     if (
         dto.status === ArticleStatus.PUBLISHED &&
         article.status !== ArticleStatus.PUBLISHED
