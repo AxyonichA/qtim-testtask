@@ -4,7 +4,6 @@ import { Repository } from 'typeorm'
 
 import { UsersRepository } from './users.repository'
 import { User } from '../users.entity'
-import { CreateUserDto } from '../dto/create-user.dto'
 
 @Injectable()
 export class TypeOrmUsersRepository extends UsersRepository {
@@ -16,7 +15,7 @@ export class TypeOrmUsersRepository extends UsersRepository {
   }
 
 
-  async createOne(data: CreateUserDto): Promise<User> {
+  async createOne(data: User): Promise<User> {
     const user = this.repo.create({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -32,11 +31,11 @@ export class TypeOrmUsersRepository extends UsersRepository {
   }
   
   findByEmailWithPassword(email: string): Promise<User | null> {
-  return this.repo
-    .createQueryBuilder('user')
-    .addSelect('user.password')
-    .where('user.email = :email', { email })
-    .getOne();
+    return this.repo
+      .createQueryBuilder('user')
+      .addSelect('user.password')
+      .where('user.email = :email', { email })
+      .getOne();
   }
 
   findById(id: number): Promise<User | null> {
