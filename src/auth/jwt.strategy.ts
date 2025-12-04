@@ -6,10 +6,12 @@ import { ConfigService } from '@nestjs/config';
 
 import { UsersService } from '../users/users.service';
 import { User } from '../users/users.entity';
+import { Role } from 'src/common/decorators/roles.decorator'
 
 export interface JwtPayload {
   sub: number;
   email: string;
+  roles: Role[]
 }
 
 export interface RequestWithCookies extends Request {
